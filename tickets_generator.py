@@ -21,7 +21,7 @@ def generar_tiquet(pdf_elements, datos_tiquet, img_path, nombre_biblioteca, fech
     print(datos_tiquet)
 
     # Generar el código QR
-    datos = f"{datos_tiquet['Cedula']}\t{datos_tiquet['Nombre']}\t{datos_tiquet['Direccion']} {datos_tiquet['Localidad']} {datos_tiquet['Barrio']}\t{datos_tiquet['Telefono']}"
+    datos = f"{datos_tiquet['N° Identificación']}\t{datos_tiquet['Nombre']}\t{datos_tiquet['Direccion']} {datos_tiquet['Localidad']} {datos_tiquet['Barrio']}\t{datos_tiquet['Telefono']}"
     qr = qrcode.QRCode(version=1, error_correction=qrcode.constants.ERROR_CORRECT_L, box_size=10, border=4)
     qr.add_data(datos)
     qr.make(fit=True)
