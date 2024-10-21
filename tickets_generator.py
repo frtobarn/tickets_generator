@@ -18,6 +18,7 @@ gc = gspread.authorize(creds)
 
 # Función para generar el tiquete
 def generar_tiquet(pdf_elements, datos_tiquet, img_path, nombre_biblioteca, fecha_formateada, banner):
+    print(datos_tiquet)
 
     # Generar el código QR
     datos = f"{datos_tiquet['Cedula']}\t{datos_tiquet['Nombre']}\t{datos_tiquet['Direccion']} {datos_tiquet['Localidad']} {datos_tiquet['Barrio']}\t{datos_tiquet['Telefono']}"
