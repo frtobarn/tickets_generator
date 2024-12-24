@@ -46,8 +46,43 @@ def procesar_datos(data):
     return pd.DataFrame(resultados)
 
 def generar_tiquet(pdf_elements, datos_tiquet, img_path, banner, fecha_formateada, nombre_biblioteca):
-    # Implementación del formato del tiquete (mismo código que el ejemplo anterior)
-    ...
+    img = Image(img_path)
+    img.drawHeight = 4.5 * mm
+    img.drawWidth = 36.2 * mm
+
+    qr = qrcode.QRCode(version=1, error_correction=qrcode.constants.ERROR_CORRECT_L, box_size=10, border=4)
+    qr.add_data(f"{datos_tiquet['Cedula']}\t{datos_tiquet['Nombre']}\t{datos_tiquet['Direccion']}")
+    qr.make(fit=True)
+    img_qr = qr.make_image(fill_color="black", back_color="white")
+    img_qr_path = f"/content/{datos_tiquet['Cedula']}_qr.png"
+    img_qr.save(img_qr_path)
+
+    img_qr = Image(img_qr_path)
+    img_qr.drawHeight = 75
+    img_qr.drawWidth = 75
+
+    data = [
+        [img, "", "Servicio de préstamo a domicilio", "", ""],
+        ["Datos de origen", "Fecha de alistamiento", fecha_formateada, "", img_qr],
+        ["", "Biblioteca que envía", nombre_biblioteca, "", ""],
+        ["", "Biblioteca que recibe", datos_tiquet['Biblioteca'], "", ""],
+        ["Datos del usuario", "Nombre", datos_tiquet['Nombre'], "", ""],
+        ["", "Dirección", datos_tiquet['Direccion'], "", ""],
+        ["", "Barrio", datos_tiquet['Barrio'], "Localidad", datos_tiquet['Localidad']],
+        ["", "Documento", datos_tiquet['Cedula'], "Teléfono", datos_tiquet['Telefono']],
+        ["", banner, "", "", ""]
+    ]
+
+    table = Table(data, colWidths=[80, 120, 180, 100, 75])
+    table.setStyle(TableStyle([
+        ('GRID', (0, 0), (-1, -1), 1, colors.black),
+        ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+        ('SPAN', (0, 0), (1, 0)),
+        ('SPAN', (2, 0), (4, 0)),
+        ('SPAN', (1, 1), (3, 1)),
+        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+    ]))
+    pdf_elements.append(KeepTogether(table))
 
 def generar_pdf(df_resultados, img_path, banner, fecha_formateada, nombre_biblioteca, archivo_salida):
     doc = SimpleDocTemplate(archivo_salida, pagesize=letter, leftMargin=5, rightMargin=5, topMargin=5, bottomMargin=5)
