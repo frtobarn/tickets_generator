@@ -75,13 +75,72 @@ def generar_tiquet(pdf_elements, datos_tiquet, img_path, banner, fecha_formatead
 
     table = Table(data, colWidths=[80, 120, 180, 100, 75])
     table.setStyle(TableStyle([
-        ('GRID', (0, 0), (-1, -1), 1, colors.black),
-        ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
-        ('SPAN', (0, 0), (1, 0)),
-        ('SPAN', (2, 0), (4, 0)),
-        ('SPAN', (1, 1), (3, 1)),
-        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-    ]))
+
+      #Todo el documento
+      ('GRID', (0, 0), (-1, -1), 1, colors.black),
+      ('WORDWRAP', (0, 0), (-1, -1)),
+      ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+      ('FONT', (0, 0), (-1, -1), 'Helvetica-Bold'),
+      ('FONTSIZE', (0, 0), (-1, -1), 10),
+      ('TOPPADDING', (0, 0), (-1, -1), 1),  # Eliminar padding superior
+      ('BOTTOMPADDING', (0, 0), (-1, -1), 1),  # Eliminar padding inferior
+
+      # Logos
+      ('SPAN', (0, 0), (1, 0)),
+      ('ALIGN', (0, 0), (2, 0), 'CENTER'),
+
+      # servicio de prestsamo a domicilio
+      ('SPAN', (2, 0), (4, 0)),
+      ('ALIGN', (2, 0), (4, 0), 'CENTER'),
+      ('BACKGROUND', (2, 0), (4, 0), colors.grey),
+      ('TEXTCOLOR', (2, 0), (4, 0), colors.white),
+
+      #Datos de origen
+      ('SPAN', (0, 1), (0, 3)),
+      ('ALIGN', (0, 1), (0, 3), 'LEFT'),
+      ('BACKGROUND', (0, 1), (0, 3), colors.grey),
+      ('TEXTCOLOR', (0, 1), (0, 3), colors.white),
+
+      #Qr
+      ('SPAN', (4, 1), (4, 4)),
+      ('ALIGN',(4, 1), (4, 4), 'CENTER'),
+      ('TOPPADDING', (4, 1), (4, 3), 0),  # Eliminar padding superior
+      ('BOTTOMPADDING', (4, 1), (4, 3), 0),  # Eliminar padding inferior
+
+      # espacio para fecha
+      ('SPAN', (2, 1), (3, 1)),
+      ('ALIGN', (2, 1), (3, 1), 'CENTER'),
+
+      # espacio para quien envía
+      ('SPAN', (2, 2), (3, 2)),
+      ('ALIGN', (2, 2), (3, 2), 'CENTER'),
+
+
+      # espacio para quien recibe
+      ('SPAN', (2, 3), (3, 3)),
+      ('ALIGN', (2, 3), (3, 3), 'CENTER'),
+
+      #Datos del usuario solicitante
+      ('SPAN', (0, 4), (0, 7)),
+      ('ALIGN', (0, 4), (0, 7), 'LEFT'),
+      ('BACKGROUND', (0, 4), (0, 7), colors.grey),
+      ('TEXTCOLOR', (0, 4), (0, 7), colors.white),
+
+      # espacio para nombre
+      ('SPAN', (2, 4), (3, 4)),
+      ('ALIGN', (2, 4), (3, 4), 'CENTER'),
+
+      # espacio para dirección
+      ('SPAN', (2, 5), (4, 5)),
+      ('ALIGN', (2, 5), (4, 5), 'CENTER'),
+
+      # Sombreado del total
+      ('BACKGROUND', (0, 8), (0, 9), colors.grey),
+      ('TEXTCOLOR', (0, 8), (0, 9), colors.white),
+
+      # novedades
+      ('SPAN', (1, 9), (4, 9)),
+  ]))
     pdf_elements.append(KeepTogether(table))
 
 def generar_pdf(df_resultados, img_path, banner, fecha_formateada, nombre_biblioteca, archivo_salida):
